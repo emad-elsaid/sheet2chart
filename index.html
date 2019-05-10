@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Google sheet to chart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  </head>
+  <body>
+    <section class="section">
+      <div class="container">
+        <h1 class="title">
+          Google sheet to a timeline chart
+        </h1>
+        <p class="subtitle">
+          Enter your google sheet ID to convert it to a timeline chart
+        </p>
+
+        <form action="timeline.html" method="get" class="form">
+          <div class="field">
+
+            <label for="id" class="label">Google Sheet ID</label>
+
+            <div class="control">
+              <input class="input" name="id" type="text" value="" placeholder="19AoR5siwI-cbrlJN47cZV7nhoZ9mO76XBUAWtO5Xb8A" required />
+            </div>
+
+            <div class="help content">
+              the sheet must have these 3 columns:
+              <ol>
+                <li>Position: String for timeline row that record belongs to</li>
+                <li>Name: A label for that row on the timeline</li>
+                <li>Start: A date for the beginning of that row in timeline</li>
+                <li>End: a date for the end of that row in timeline</li>
+              </ol>
+              An example could be found here <a href="https://docs.google.com/spreadsheets/d/19AoR5siwI-cbrlJN47cZV7nhoZ9mO76XBUAWtO5Xb8A/edit#gid=0"> https://docs.google.com/spreadsheets/d/19AoR5siwI-cbrlJN47cZV7nhoZ9mO76XBUAWtO5Xb8A/edit#gid=0 </a>
+            </div>
+
+          </div>
+          <button class="button is-link">Create timeline</button>
+        </form>
+
+      </div>
+    </section>
+  </body>
+</html>

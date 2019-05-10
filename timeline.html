@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>Timeline</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  </head>
+
+  <body>
+    <div id="timeline" style="height: 200px;"></div>
+
+    <script type="text/javascript">
+     function sheetID() {
+         var urlParams = new URLSearchParams(window.location.search);
+         return urlParams.get('id');
+     }
+
+     function loadSheet(sheet_id, page_id, callback){
+         var url = "https://spreadsheets.google.com/feeds/list/"+sheet_id+"/"+page_id+"/public/values?alt=json";
+
+         $.ajax({
+             url:url,
+             dataType:"jsonp",
+             success:function(data) {
+                 var rows = data.feed.entry.map(function(e) {
+                     return [
+                         e.gsx$position.$t,
+                         e.gsx$name.$t,
+                         new Date(e.gsx$start.$t),
+                         new Date(e.gsx$end.$t)
+                     ]
+                 });
+                 callback(rows);
+             },
+         });
+     }
+
+     function drawChart(rows) {
+         var container = document.getElementById('timeline');
+         var chart = new google.visualization.Timeline(container);
+         var dataTable = new google.visualization.DataTable();
+         dataTable.addColumn({ type: 'string', id: 'Position' });
+         dataTable.addColumn({ type: 'string', id: 'Name' });
+         dataTable.addColumn({ type: 'date', id: 'Start' });
+         dataTable.addColumn({ type: 'date', id: 'End' });
+         dataTable.addRows(rows);
+
+         var options = {
+             timeline: { colorByRowLabel: true }
+         };
+         chart.draw(dataTable, options);
+     }
+
+     loadSheet(sheetID(), 'od6', function(rows){
+         google.charts.load("current", {packages:["timeline"]});
+         google.charts.setOnLoadCallback(function(){
+             drawChart(rows);
+         });
+     });
+    </script>
+  </body>
+</html>
