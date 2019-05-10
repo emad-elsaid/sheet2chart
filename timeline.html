@@ -15,6 +15,36 @@
          return urlParams.get('id');
      }
 
+     function CSVData() {
+         var urlParams = new URLSearchParams(window.location.search);
+         return urlParams.get('rows');
+     }
+
+     function parseCSV(data) {
+         var trimmed_data = data.trim();
+         var lines = trimmed_data.split("\n");
+         var fields = lines.map(function(l) { return l.trim().split(','); });
+         var header = fields[0];
+         var body = fields.slice(1);
+         var objects = [];
+         for ( var i = 0; i < body.length; i++ ) {
+             var row = {};
+             for ( var j = 0; j < header.length; j++ ) {
+                 row[header[j]] = body[i][j];
+             }
+             objects.push(row);
+         }
+
+         return objects.map(function(e) {
+             return [
+                 e["Position"],
+                 e["Name"],
+                 new Date(e["Start"]),
+                 new Date(e["End"])
+             ];
+         });
+     }
+
      function loadSheet(sheet_id, page_id, callback){
          var url = "https://spreadsheets.google.com/feeds/list/"+sheet_id+"/"+page_id+"/public/values?alt=json";
 
@@ -51,12 +81,25 @@
          chart.draw(dataTable, options);
      }
 
-     loadSheet(sheetID(), 'od6', function(rows){
+     function loadLib(callback) {
          google.charts.load("current", {packages:["timeline"]});
-         google.charts.setOnLoadCallback(function(){
+         google.charts.setOnLoadCallback(callback);
+     }
+
+     if ( sheetID() != null ) {
+         loadSheet(sheetID(), 'od6', function(rows){
+             loadLib(function() {
+                 drawChart(rows);
+             });
+         });
+     }
+
+     if ( CSVData() != null ) {
+         loadLib(function() {
+             var rows = parseCSV(CSVData());
              drawChart(rows);
          });
-     });
+     }
     </script>
   </body>
 </html>

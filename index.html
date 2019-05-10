@@ -17,30 +17,64 @@
           Enter your google sheet ID to convert it to a timeline chart
         </p>
 
-        <form action="timeline.html" method="get" class="form">
-          <div class="field">
+        <div class="section">
+          <form action="timeline.html" method="get" class="form">
 
-            <label for="id" class="label">Google Sheet ID</label>
+            <div class="field">
+              <label for="id" class="label">Google Sheet ID</label>
+              <div class="control">
+                <input class="input" name="id" type="text" value="" placeholder="19AoR5siwI-cbrlJN47cZV7nhoZ9mO76XBUAWtO5Xb8A" required />
+              </div>
 
-            <div class="control">
-              <input class="input" name="id" type="text" value="" placeholder="19AoR5siwI-cbrlJN47cZV7nhoZ9mO76XBUAWtO5Xb8A" required />
+              <div class="help content">
+                The google sheet must be <strong>public</strong> and <strong>must have</strong> have these 3 columns:
+                <ol>
+                  <li>Position: String for timeline row that record belongs to</li>
+                  <li>Name: A label for that row on the timeline</li>
+                  <li>Start: A date for the beginning of that row in timeline</li>
+                  <li>End: a date for the end of that row in timeline</li>
+                </ol>
+                To make it public you need to use <strong>File -> Publish to the internet </strong> <br>
+                An example could be found here
+                <a href="https://docs.google.com/spreadsheets/d/19AoR5siwI-cbrlJN47cZV7nhoZ9mO76XBUAWtO5Xb8A/edit#gid=0">
+                  https://docs.google.com/spreadsheets/d/19AoR5siwI-cbrlJN47cZV7nhoZ9mO76XBUAWtO5Xb8A/edit#gid=0
+                </a>
+              </div>
+
             </div>
 
-            <div class="help content">
-              The google sheet must be <strong>public</strong> and <strong>must have</strong> have these 3 columns:
-              <ol>
-                <li>Position: String for timeline row that record belongs to</li>
-                <li>Name: A label for that row on the timeline</li>
-                <li>Start: A date for the beginning of that row in timeline</li>
-                <li>End: a date for the end of that row in timeline</li>
-              </ol>
-              To make it public you need to use <strong>File -> Publish to the internet </strong> <br>
-              An example could be found here <a href="https://docs.google.com/spreadsheets/d/19AoR5siwI-cbrlJN47cZV7nhoZ9mO76XBUAWtO5Xb8A/edit#gid=0"> https://docs.google.com/spreadsheets/d/19AoR5siwI-cbrlJN47cZV7nhoZ9mO76XBUAWtO5Xb8A/edit#gid=0 </a>
+            <div class="field">
+              <button class="button is-link">Create timeline</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="section">
+          <form action="timeline.html" method="get" class="form">
+            <h1 class="title">OR</h1>
+
+            <div class="field">
+              <label for="file">Exported CSV file for the google sheet</label>
+              <div class="control">
+                <input name="file" type="file" onchange="handleFile(this.files[0])"/>
+                <input name="rows" id="rows" type="hidden" value=""/>
+                <script type="text/javascript">
+                 var rows = document.getElementById('rows');
+                 function handleFile(file) {
+                     var reader = new FileReader();
+                     reader.onload = function(e) { rows.value = e.target.result; }
+                     reader.readAsText(file);
+                 }
+                </script>
+              </div>
             </div>
 
-          </div>
-          <button class="button is-link">Create timeline</button>
-        </form>
+            <div class="field">
+              <button class="button is-link">Create timeline</button>
+            </div>
+
+          </form>
+        </div>
 
       </div>
     </section>
